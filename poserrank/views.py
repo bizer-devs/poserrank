@@ -1,7 +1,6 @@
 from flask import render_template, redirect, url_for, request, session, jsonify
 from poserrank import app, db
 from poserrank.models import User, Group
-from poserrank.tools import dictifyUser
 
 @app.route('/')
 def index():
