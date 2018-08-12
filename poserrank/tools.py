@@ -1,4 +1,26 @@
 import json
+from json import JSONEncoder
+
+
+class ModelEncoder(JSONEncoder):
+    """
+    A bare-bones JSONEncoder that emulates JSONEncoder, but attempts to call `serializeable` first.  All models should
+    have this method defined, allowing them to
+    """
+
+    def default(self, obj):
+        """
+        WTF, why doesn't JSONEncoder already try str(obj) ??
+        """
+        try:
+            return obj.serializeable()
+        except AttributeError:
+            pass
+
+        try:
+            return JSONEncoder.default(self, obj)
+        except TypeError:
+            return str(obj)
 
 # Returns a dictionary of the information contained in a user object, so that
 # this data can be stored in the session.  Also removes sensitive information

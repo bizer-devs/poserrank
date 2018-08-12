@@ -30,6 +30,14 @@ class User(db.Model):
 #	sent_invitations = db.relationship('Invitations')
 #	recieved_invitations = db.relationship('Invitations')
 
+	def serializeable(self):
+		return {
+			'id': self.id,
+			'username': self.username,
+			'full_name': self.full_name,
+			'email': self.email,
+		}
+
 	def __repr__(self):
 		return '<User %r>' % self.username
 
@@ -44,6 +52,14 @@ class Group(db.Model):
 		back_populates='groups')
 
 #	invitations = db.relationship('Invitations')
+
+	def serializeable(self):
+		return {
+			'id': self.id,
+			'name': self.name,
+			'full_name': self.full_name,
+			'email': self.email,
+		}
 
 	def __repr__(self):
 		return '<Group %r>' % self.name
