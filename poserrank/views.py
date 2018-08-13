@@ -1,7 +1,6 @@
-from flask import render_template, redirect, url_for, request, session
+from flask import render_template, redirect, url_for, request, session, jsonify
 from poserrank import app, db
 from poserrank.models import User, Group
-from poserrank.tools import dictifyUser
 
 @app.route('/')
 def index():
@@ -25,7 +24,7 @@ def login():
 		if query.count() > 0: # check if any results came up
 			user = query.first()
 			if user.password == request.form['password']: # if the passwords match, log the user in
-				session['user'] = dictifyUser(user)
+				session['user'] = jsonify(user)
 				return redirect(url_for('index'))
 			else:
 				return 'wrong password'
