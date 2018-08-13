@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, session, jsonify
 from poserrank import app, db
-from poserrank.models import User, Group
+from poserrank.models import User, Group, Membership
 
 """
 All of the views defined for this project will return either an html document or a redirect.  If instead you want only
@@ -31,6 +31,7 @@ def login():
 			user = query.first()
 			if user.password == request.form['password']: # if the passwords match, log the user in
 				session['user'] = jsonify(user)
+				session['user_id'] = user.id  # sloppy hack -- needs to be fixed later
 				return redirect(url_for('index'))
 			else:
 				return 'wrong password'
@@ -85,13 +86,19 @@ def groups():
 @app.route('/groups/new', methods=['GET', 'POST'])
 def new_group():
 	if 'user' in session:
+		user = User.query.filter(User.id == session['user_id'])[0]
+
 		if request.method == 'GET':
 			return render_template('newgroup.html.j2')
 
 		elif request.method == 'POST':
-			newGroup = Group(name=request.form['name'],
+			group = Group(name=request.form['name'],
 						description=request.form['description'])
-			db.session.add(newGroup)
+			first_membership = Membership(user=user,
+										  group=group,
+										  is_owner=True)
+			db.session.add(group)
+			db.session.add(first_membership)
 			db.session.commit()
 			return redirect(url_for('index'))
 

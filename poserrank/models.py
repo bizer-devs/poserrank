@@ -31,7 +31,8 @@ class Membership(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	user_id = db.Column(db.ForeignKey('users.id'), nullable=False)
 	group_id = db.Column(db.ForeignKey('groups.id'))
-	score = db.Column(db.Integer)
+	score = db.Column(db.Integer, default=0)
+	is_owner = db.Column(db.Boolean, default=False)
 
 	user = db.relationship('User', foreign_keys=[user_id], back_populates='memberships')
 	group = db.relationship('Group', foreign_keys=[group_id], back_populates='memberships')
