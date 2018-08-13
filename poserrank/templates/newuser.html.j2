@@ -1,5 +1,6 @@
 {% extends "layout.html.j2" %}
 {% block page %}New user{% endblock %}
+{% block script_src %}src="../static/javascript/newuser.js"{% endblock %}
 {% block content %}
 
 <div class="container">
@@ -16,29 +17,33 @@
 					<form action="{{ url_for('newuser') }}" method="POST">
 						<div class="field">
 							<label class="label">Username</label>
+                            <label id="usernameError" style="color:red;"></label>
 							<div class="control">
-								<input class="input" type="text" name="username" placeholder="Text input">
+								<input class="input" onfocusout="checkUsername()" type="text" name="username" placeholder="Text input">
 							</div>
 						</div>
 						<div class="field">
 							<label class="label">Full name</label>
+                            <label id="fullnameError" style="color:red;"></label>
 							<div class="control">
-								<input class="input" type="text" name="full_name" placeholder="Text input">
+								<input class="input" onfocusout="checkFullname()" type="text" name="full_name" placeholder="Text input">
 							</div>
 						</div>
 						<div class="field">
 							<label class="label">Email</label>
+                            <label id="emailError" style="color:red;"></label>
 							<div class="control">
-								<input class="input" type="text" name="email" placeholder="Text input">
+								<input class="input" onfocusout="checkEmail()" type="text" name="email" placeholder="Text input">
 							</div>
 						</div>
 						<div class="field">
 							<label class="label">Password</label>
+                            <label id="passwordError" style="color:red;"></label>
 							<div class="control">
-								<input class="input" type="text" name="password" placeholder="Text input">
+								<input class="input" onfocusout="checkPassword()" type="password" name="password" placeholder="Text input">
 							</div>
 						</div>
-						<input type="submit" value="Create">
+						<input id="submit" type="submit" value="Create" disabled>
 					</form>
 				</div>
 			</div>
