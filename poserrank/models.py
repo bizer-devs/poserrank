@@ -8,7 +8,8 @@ class User(db.Model):
 	full_name = db.Column(db.String(64))
 	email = db.Column(db.String(64), unique=True)
 	password = db.Column(db.String(64))
-	score = db.Column(db.Integer, default=0)
+
+	memberships = db.relationship('Membership', back_populates='user')
 
 #	sent_invitations = db.relationship('Invitations')
 #	recieved_invitations = db.relationship('Invitations')
@@ -32,8 +33,8 @@ class Membership(db.Model):
 	group_id = db.Column(db.ForeignKey('groups.id'))
 	score = db.Column(db.Integer)
 
-	user = db.relationship('User', foreign_keys=[user_id])
-	group = db.relationship('Group', foreign_keys=[group_id])
+	user = db.relationship('User', foreign_keys=[user_id], back_populates='memberships')
+	group = db.relationship('Group', foreign_keys=[group_id], back_populates='memberships')
 
 	def serializeable(self):
 		return {
@@ -52,6 +53,8 @@ class Group(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(64), unique=True)
 	description = db.Column(db.Text)
+
+	memberships = db.relationship('Membership', back_populates='group')
 
 #	invitations = db.relationship('Invitations')
 

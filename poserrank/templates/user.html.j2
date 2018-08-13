@@ -1,0 +1,31 @@
+{% extends "layout.html.j2" %}
+{% block page %}Profile: {{ user.username }}{% endblock %}
+{% block content %}
+
+<div class="container">
+	<section class="hero">
+		<div class="container">
+			<h1 class="title">{{ user.username }}</h1>
+            <h2 class="subtitle">A real poser if there ever was one</h2>
+		</div>
+	</section>
+
+	<section class="section">
+		<table class="table">
+			<thead>
+				<th>Group</th>
+				<th>Score</th>
+			</thead>
+			<tbody>
+			{% for membership in user.memberships %}
+				<tr>
+					<td>{{ membership.group.name }}</td>
+					<td>{{ membership.score }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</section>
+</div>
+
+{% endblock %}

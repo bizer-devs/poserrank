@@ -2,6 +2,12 @@ from flask import render_template, redirect, url_for, request, session, jsonify
 from poserrank import app, db
 from poserrank.models import User, Group
 
+"""
+All of the views defined for this project will return either an html document or a redirect.  If instead you want only
+the data from the view, some views accept `json=true` as an argument in the url.
+For instance: poserrank.com/users/3?json=true
+"""
+
 @app.route('/')
 def index():
 	return render_template('index.html.j2')
@@ -37,6 +43,19 @@ def login():
 def logout():
 	session.clear()
 	return redirect(url_for('index'))
+
+
+@app.route('/users/<int:id>', methods=['GET'])
+def get_user(id):
+	try:
+		user = User.query.filter(User.id == id)[0]
+	except IndexError:
+		return 'User {} not found'.format(id), 404
+
+	if 'json' in request.args and request.args['json'] == 'true':
+		return jsonify(user)
+	else:
+		return render_template('user.html.j2', user=user)
 
 
 @app.route('/users/new', methods=['GET', 'POST'])
