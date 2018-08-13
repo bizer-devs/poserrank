@@ -32,14 +32,15 @@ def login():
 		else:
 			return request.form['username'] + ' does not exist'
 
-# simple endpoint to log the current user out
+
 @app.route('/logout/')
 def logout():
 	session.clear()
 	return redirect(url_for('index'))
 
-@app.route('/newuser/', methods=['GET', 'POST'])
-def newuser():
+
+@app.route('/users/new', methods=['GET', 'POST'])
+def new_user():
 	if request.method == 'GET':
 		return render_template('newuser.html.j2')
 
@@ -52,8 +53,18 @@ def newuser():
 		db.session.commit()
 		return redirect(url_for('index'))
 
-@app.route('/newgroup/', methods=['GET', 'POST'])
-def newgroup():
+
+@app.route('/groups/')
+def groups():
+	if 'user' in session:
+		query = Group.query.all()
+		return render_template('groups.html.j2', groups=query)
+	else:
+		return redirect(url_for('index'))
+
+
+@app.route('/groups/new', methods=['GET', 'POST'])
+def new_group():
 	if 'user' in session:
 		if request.method == 'GET':
 			return render_template('newgroup.html.j2')
@@ -67,11 +78,3 @@ def newgroup():
 
 	else:
 		return redirect(url_for('index'))
-
-@app.route('/groups/')
-def groups():
-	if 'user' in session:
-		query = Group.query.all()
-		return(render_template('groups.html.j2', groups=query))
-	else:
-		return(redirect(url_for('index')))
