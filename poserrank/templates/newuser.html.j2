@@ -1,6 +1,9 @@
 {% extends "layout.html.j2" %}
 {% block page %}New user{% endblock %}
-{% block script_src %}src="../static/javascript/newuser.js"{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript" src="../static/javascript/newuser.js"></script>
+{% endblock %}
 {% block content %}
 
 <div class="container">
