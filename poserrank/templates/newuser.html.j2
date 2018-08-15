@@ -2,7 +2,7 @@
 {% block page %}New user{% endblock %}
 {% block head %}
     {{ super() }}
-    <script type="text/javascript" src="../static/javascript/newuser.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='javascript/newuser.js') }}"></script>
 {% endblock %}
 {% block content %}
 

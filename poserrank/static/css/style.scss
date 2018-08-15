@@ -1,8 +1,8 @@
-@import "../../bulma/sass/utilities/initial-variables";
+@import "../../../bulma/sass/utilities/initial-variables";
 
 $family-primary: 'Anonymous Pro', monospace;
 
-@import "../../bulma/bulma.sass";
+@import "../../../bulma/bulma";
 
 // Bulma doesn't have variables to edit this, but we can still strongarm it
 .title {
