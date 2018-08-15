@@ -28,9 +28,8 @@ class User(db.Model):
 
 class Membership(db.Model):
 	__tablename__ = 'memberships'
-	id = db.Column(db.Integer, primary_key=True)
-	user_id = db.Column(db.ForeignKey('users.id'), nullable=False)
-	group_id = db.Column(db.ForeignKey('groups.id'))
+	user_id = db.Column(db.ForeignKey('users.id'), primary_key=True)
+	group_id = db.Column(db.ForeignKey('groups.id'), primary_key=True)
 	score = db.Column(db.Integer, default=0)
 	is_owner = db.Column(db.Boolean, default=False)
 

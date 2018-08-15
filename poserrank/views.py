@@ -127,7 +127,7 @@ def add_user_to_group(id):
 				if Membership.query.filter(Membership.user == new_member).filter(Membership.group == group).count() > 0:
 					return 'User {} is already a member of this group'.format(request.form['username']), 400
 
-				membership = Membership(user=user,
+				membership = Membership(user=new_member,
 										group=group,
 										is_owner=('is_owner' in request.form))
 				db.session.add(membership)
