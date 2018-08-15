@@ -1,30 +1,64 @@
 {% extends "layout.html.j2" %}
 {% block page %}Profile: {{ user.username }}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='javascript/user.js') }}"></script>
+{% endblock %}
 {% block content %}
 
 <div class="container">
-	<section class="hero">
-		<div class="container">
-			<h1 class="title">{{ user.username }}</h1>
-            <h2 class="subtitle">A real poser if there ever was one</h2>
-		</div>
-	</section>
+    <div class="columns">
+        <div class="column is-half">
+            <img src="{{ user.profilPic }}"
+                 alt="Profil Pic" width="75%" height="75%" class="user-profilPic">
+            {% if 'user' in session %}
+                {% if session['user']['id'] != user.id %}
+                    <div id="chooseProfile" class="user-centerSection">
+                        <a  href="javascript:void(0);" onclick="changeProfilPic()">Change {{ user.username }}'s Profile Picture!</a>
+                    </div>
+                {% else %}
+                    <div id="chooseProfile" class="user-centerSection">
+                        <a  href="javascript:void(0);" style="color:darkgray">Change {{ user.username }}'s Profile Picture!</a><br>
+                        <span style="color:red">You cannot set your own profil picture!</span>
+                    </div>
+                <!-- Check if user in a group with profile user -->
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="column user-centerSection">
+            <h1 class="title user-title">{{ user.username }}</h1>
+            <h2 id="subt" class="subtitle"><b>{{ user.subtitle }}</b></h2>
+            {% if 'user' in session and session['user']['id'] == user.id %}
+                <div id="changeSubtitle">
+                    <a href="javascript:void(0);" onclick="changeSubtitle()">Change your subtitle!</a>
+                </div><br>
+            {% endif %}
+            <h2 class="subtitle">Cumulative Poser Score: {{ user.memberships | sum(attribute='score') }}</h2>
+        </div>
+    </div>
 
-	<section class="section">
-		<table class="table">
-			<thead>
-				<th>Group</th>
-				<th>Score</th>
-			</thead>
-			<tbody>
-			{% for membership in user.memberships %}
-				<tr>
-					<td>{{ membership.group.name }}</td>
-					<td>{{ membership.score }}</td>
-				</tr>
-			{% endfor %}
-			</tbody>
-		</table>
+	<section class="section user-table" style="font-size:2rem">
+        {% if not user.memberships %}
+            <h2 class="user-centerSection">Forever Alone</h2>
+        {% else %}
+            <table class="table" align="center">
+                <thead>
+                    <th>Group</th>
+                    <th>Description</th>
+                    <th>Score</th>
+                </thead>
+                <tbody>
+                {% for membership in user.memberships %}
+                    <tr>
+                        <td>{{ membership.group.name }}</td>
+                        <td>{{ membership.group.description }}</td>
+                        <td>{{ membership.score }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
 	</section>
 </div>
 

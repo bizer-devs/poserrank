@@ -59,6 +59,21 @@ def get_user(id):
 		return render_template('user.html.j2', user=user)
 
 
+@app.route('/users/<int:id>', methods=['PATCH'])
+def patch_user(id):
+	try:
+		user = User.query.filter(User.id == id)[0]
+	except IndexError:
+		return 'User {} not found'.format(id), 404
+
+	host, data = request.data.decode('utf-8').split(':', 1)
+	if host == 'subtitle' or host == 'profilPic':
+		setattr(user, host, data)
+		db.session.commit()
+		return 'Message received'
+	return 'Host invalid'
+
+
 @app.route('/users/new', methods=['GET', 'POST'])
 def new_user():
 	if request.method == 'GET':

@@ -8,6 +8,8 @@ class User(db.Model):
 	full_name = db.Column(db.String(64))
 	email = db.Column(db.String(64), unique=True)
 	password = db.Column(db.String(64))
+	subtitle = db.Column(db.String(64))
+	profilPic = db.Column(db.String(64))
 
 	memberships = db.relationship('Membership', back_populates='user')
 

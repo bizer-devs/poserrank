@@ -1,0 +1,16 @@
+.user-centerSection {
+    display: block;
+    text-align: center;
+}
+
+.user-profilPic {
+    display: block;
+    margin: auto;
+    border: solid;
+    border-width: medium;
+}
+
+.user-title {
+    padding-top: 5rem;
+    font-size: 8rem;
+}
