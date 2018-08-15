@@ -19,7 +19,7 @@
 			</div>
 			<div class="navbar-end">
 				{% if 'user' in session %}
-					<span class="navbar-item">{{ session['user']['username'] }}</span>
+					<a class="navbar-item" href="{{ url_for('get_user', id=session['user']['id']) }}">{{ session['user']['username'] }}</a>
 					<a class="navbar-item" href="{{ url_for('logout') }}">Logout</a>
 				{% else %}
 					<span class="navbar-item">Guest</span>
