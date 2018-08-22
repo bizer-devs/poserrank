@@ -1,15 +1,23 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from poserrank.shared import db
 from poserrank.tools import ModelEncoder
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/development.db'
-app.json_encoder = ModelEncoder  # swap out the encoder for something that will attempt to call serializable()
-db = SQLAlchemy(app)
-
 from poserrank.api import api
-app.register_blueprint(api, url_prefix='/api')
+from poserrank.views import views
 
-app.secret_key = 'pushingakeytogithubisterriblepractice'
+def app_factory(debug=False):
+	app = Flask(__name__)
+	if debug:
+		app.config.from_pyfile('devconfig.py')
 
-import poserrank.views
+	else:
+		app.config.from_pyfile('prodconfig.py')
+	app.json_encoder = ModelEncoder  # swap out the encoder for something that will attempt to call serializable()
+	db.init_app(app)
+
+	app.register_blueprint(views, url_prefix='')
+	app.register_blueprint(api, url_prefix='/api')
+
+
+	import poserrank.views
+
+	return app

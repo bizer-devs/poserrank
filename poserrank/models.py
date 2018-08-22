@@ -1,4 +1,4 @@
-from poserrank import db
+from poserrank.shared import db
 
 
 class User(db.Model):

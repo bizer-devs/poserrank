@@ -2,8 +2,8 @@
 {% block page %}Profile: {{ user.username }}{% endblock %}
 {% block head %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='javascript/user.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('views.static', filename='css/user.css') }}">
+    <script type="text/javascript" src="{{ url_for('views.static', filename='javascript/user.js') }}"></script>
 {% endblock %}
 {% block content %}
 
