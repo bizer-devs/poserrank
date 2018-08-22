@@ -58,8 +58,6 @@ class Group(db.Model):
 
 	memberships = db.relationship('Membership', back_populates='group')
 
-#	invitations = db.relationship('Invitations')
-
 	def serializeable(self):
 		return {
 			'id': self.id,
@@ -71,9 +69,12 @@ class Group(db.Model):
 	def __repr__(self):
 		return '<Group %r>' % self.name
 
-"""class Invitation(db.Model):
-	__tablename__ = 'Invitations'
+class Report(db.Model):
+	__tablename__ = 'reports'
 	id = db.Column(db.Integer, primary_key=True)
-	sender_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
-	recipient_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
-	group_id = db.Column(db.Integer, db.ForeignKey('Group.id'))"""
+	reporter_id = db.Column(db.ForeignKey('users.id'), nullable=False)
+	offender_id = db.Column(db.ForeignKey('users.id'), nullable=False)
+	score_change = db.Column(db.Integer, nullable=False)
+	description = db.Column(db.Text)
+	timestamp = db.Column(db.DateTime, nullable=False)
+

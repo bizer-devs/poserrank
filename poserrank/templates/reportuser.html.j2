@@ -1,0 +1,41 @@
+{% extends "layout.html.j2" %}
+{% block page %}Report User{% endblock %}
+{% block content %}
+    <section class="section">
+		<div class="columns">
+			<div class="column is-one-third is-offset-one-third">
+				<div class="box">
+					<form action="{{ url_for('report_user') }}" method="POST">
+                        <div class="field">
+							<label class="label">Group</label>
+							<div class="control">
+								<input class="input" type="text" name="name" placeholder="Text input">
+							</div>
+						</div>
+
+                        <div class="field">
+							<label class="label">User</label>
+							<div class="control">
+								<input class="input" type="text" name="name" placeholder="Text input">
+							</div>
+						</div>
+
+                        <div class="field">
+							<label class="label">Severity</label>
+							<div class="control">
+								<input class="input" type="text" name="name" placeholder="Text input">
+							</div>
+						</div>
+
+						<div class="field">
+							<label class="label">Description</label>
+							<div class="control">
+								<textarea class="textarea" name="description"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
