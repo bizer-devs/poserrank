@@ -1,4 +1,5 @@
 from flask import current_app, render_template, redirect, url_for, request, session, jsonify, Blueprint
+from poserrank.shared import db
 from poserrank.models import User, Group, Membership
 
 """
@@ -70,7 +71,7 @@ def patch_user(id):
 	host, data = request.data.decode('utf-8').split(':', 1)
 	if host == 'subtitle' or host == 'profilPic':
 		setattr(user, host, data)
-		current_app.db.session.commit()
+		db.session.commit()
 		return 'Message received'
 	return 'Host invalid'
 
@@ -85,8 +86,8 @@ def new_user():
 					full_name=request.form['full_name'],
 					email=request.form['email'],
 					password=request.form['password'])
-		current_app.db.session.add(newUser)
-		current_app.db.session.commit()
+		db.session.add(newUser)
+		db.session.commit()
 		return redirect(url_for('views.index'))
 
 
@@ -113,9 +114,9 @@ def new_group():
 			first_membership = Membership(user=user,
 										  group=group,
 										  is_owner=True)
-			current_app.db.session.add(group)
-			current_app.db.session.add(first_membership)
-			current_app.db.session.commit()
+			db.session.add(group)
+			db.session.add(first_membership)
+			db.session.commit()
 			return redirect(url_for('views.index'))
 
 	else:
@@ -146,8 +147,8 @@ def add_user_to_group(id):
 				membership = Membership(user=new_member,
 										group=group,
 										is_owner=('is_owner' in request.form))
-				current_app.db.session.add(membership)
-				current_app.db.session.commit()
+				db.session.add(membership)
+				db.session.commit()
 				return redirect(url_for('views.index'))
 
 		else:
