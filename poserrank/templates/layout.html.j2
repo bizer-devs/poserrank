@@ -11,20 +11,20 @@
 	<body>
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-start">
-				<a class="navbar-item" href="{{ url_for('index') }}">Home</a>
-				<a class="navbar-item" href="{{ url_for('top') }}">Top</a>
+				<a class="navbar-item" href="{{ url_for('views.index') }}">Home</a>
+				<a class="navbar-item" href="{{ url_for('views.top') }}">Top</a>
 				{% if 'user' in session %}
-					<a class="navbar-item" href="{{ url_for('groups') }}">Groups</a>
+					<a class="navbar-item" href="{{ url_for('views.groups') }}">Groups</a>
 				{% endif %}
 			</div>
 			<div class="navbar-end">
 				{% if 'user' in session %}
-					<a class="navbar-item" href="{{ url_for('get_user', id=session['user']['id']) }}">{{ session['user']['username'] }}</a>
-					<a class="navbar-item" href="{{ url_for('logout') }}">Logout</a>
+					<a class="navbar-item" href="{{ url_for('views.get_user', id=session['user']['id']) }}">{{ session['user']['username'] }}</a>
+					<a class="navbar-item" href="{{ url_for('views.logout') }}">Logout</a>
 				{% else %}
 					<span class="navbar-item">Guest</span>
-					<a class="navbar-item" href="{{ url_for('login') }}">Sign in</a>
-					<a class="navbar-item" href="{{ url_for('new_user') }}">New user</a>
+					<a class="navbar-item" href="{{ url_for('views.login') }}">Sign in</a>
+					<a class="navbar-item" href="{{ url_for('views.new_user') }}">New user</a>
 				{% endif %}
 			</div>
 		</nav>
