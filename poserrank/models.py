@@ -73,8 +73,31 @@ class Report(db.Model):
 	__tablename__ = 'reports'
 	id = db.Column(db.Integer, primary_key=True)
 	reporter_id = db.Column(db.ForeignKey('users.id'), nullable=False)
-	offender_id = db.Column(db.ForeignKey('users.id'), nullable=False)
+	offender_id = db.Column(db.Integer, nullable=False)
+	group_id = db.Column(db.Integer)
 	score_change = db.Column(db.Integer, nullable=False)
 	description = db.Column(db.Text)
 	timestamp = db.Column(db.DateTime, nullable=False)
 
+	# offender_id and group_id are a composite foreign key to memberships
+	# https://stackoverflow.com/questions/7504753/relations-on-composite-keys-using-sqlalchemy
+	__table_args__ = (db.ForeignKeyConstraint([offender_id, group_id],
+											  ['memberships.user_id', 'memberships.group_id']),
+					  {})
+
+	reporter = db.relationship('User', foreign_keys=[reporter_id])
+	membership = db.relationship('Membership', foreign_keys=[offender_id, group_id])
+
+	def serializeable(self):
+		return {
+			'id': self.id,
+			'reporter_id': self.reporter_id,
+			'offender_id': self.offender_id,
+			'group_id': self.group_id,
+			'score_change': self.score_change,
+			'description': self.description,
+			'timestamp': self.timestamp,
+		}
+
+	def __repr__(self):
+		return '<Report %d>' % self.id
