@@ -1,4 +1,4 @@
-from flask import current_app, render_template, redirect, url_for, request, session, jsonify, Blueprint
+from flask import render_template, redirect, url_for, request, session, jsonify, Blueprint
 from poserrank.shared import db
 from poserrank.models import User, Group, Membership
 
@@ -91,68 +91,3 @@ def new_user():
 		return redirect(url_for('views.index'))
 
 
-@views.route('/groups/')
-def groups():
-	if 'user' in session:
-		query = Group.query.all()
-		return render_template('groups.html.j2', groups=query)
-	else:
-		return redirect(url_for('views.index'))
-
-
-@views.route('/groups/new', methods=['GET', 'POST'])
-def new_group():
-	if 'user' in session:
-		user = User.query.filter(User.id == session['user_id'])[0]
-
-		if request.method == 'GET':
-			return render_template('newgroup.html.j2')
-
-		elif request.method == 'POST':
-			group = Group(name=request.form['name'],
-						description=request.form['description'])
-			first_membership = Membership(user=user,
-										  group=group,
-										  is_owner=True)
-			db.session.add(group)
-			db.session.add(first_membership)
-			db.session.commit()
-			return redirect(url_for('views.index'))
-
-	else:
-		return redirect(url_for('views.index'))
-
-@views.route('/groups/<int:id>/adduser', methods=['GET', 'POST'])
-def add_user_to_group(id):
-	if 'user_id' in session:
-		user = User.query.filter(User.id == session['user_id'])[0]
-		group = Group.query.filter(Group.id == id)[0]
-		try:
-			membership = Membership.query.filter(Membership.user == user).filter(Membership.group == group)[0]
-		except IndexError:
-			return 'You are not a member of this group', 403
-
-		if membership.is_owner:
-			if request.method == 'GET':
-				return render_template('addusertogroup.html.j2', group=group)
-			elif request.method == 'POST':
-				try:
-					new_member = User.query.filter(User.username == request.form['username'])[0]
-				except IndexError:
-					return 'User {} does not exist'.format(request.form['username']), 400
-
-				if Membership.query.filter(Membership.user == new_member).filter(Membership.group == group).count() > 0:
-					return 'User {} is already a member of this group'.format(request.form['username']), 400
-
-				membership = Membership(user=new_member,
-										group=group,
-										is_owner=('is_owner' in request.form))
-				db.session.add(membership)
-				db.session.commit()
-				return redirect(url_for('views.index'))
-
-		else:
-			return 'You are not an owner of this group', 403
-
-	else:
-		return redirect(url_for('views.index'))

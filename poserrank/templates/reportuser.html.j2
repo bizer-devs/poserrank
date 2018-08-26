@@ -1,17 +1,19 @@
 {% extends "layout.html.j2" %}
 {% block page %}Report User{% endblock %}
 {% block content %}
+<div class="container">
+	<section class="hero">
+		<div class="container has-text-centered">
+			<h1 class="title">Report {{ group.name }} User</h1>
+		</div>
+	</section>
+
     <section class="section">
+
 		<div class="columns">
 			<div class="column is-one-third is-offset-one-third">
 				<div class="box">
-					<form action="{{ url_for('report_user') }}" method="POST">
-                        <div class="field">
-							<label class="label">Group</label>
-							<div class="control">
-								<input class="input" type="text" name="name" placeholder="Text input">
-							</div>
-						</div>
+					<form action="{{ url_for('groups.report_user') }}" method="POST">
 
                         <div class="field">
 							<label class="label">User</label>
@@ -38,4 +40,5 @@
 			</div>
 		</div>
 	</section>
+</div>
 {% endblock %}
