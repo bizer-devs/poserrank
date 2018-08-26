@@ -10,7 +10,7 @@ def app_factory(debug=False):
 	if debug:
 		app.config.from_pyfile('configs/devconfig.py')
 		try:
-			app.config.from_pyfile('config/keys.py')
+			app.config.from_pyfile('configs/keys.py')
 		except FileNotFoundError:
 			# when in debug mode, we can use some generic key if none is provided
 			app.config['SECRET_KEY'] = 'notverysecretkey'
@@ -18,7 +18,7 @@ def app_factory(debug=False):
 	else:
 		app.config.from_pyfile('configs/prodconfig.py')
 		try:
-			app.config.from_pyfile('config/keys.py')
+			app.config.from_pyfile('configs/keys.py')
 		except FileNotFoundError:
 			# in prod, not having a keyfile is unacceptable
 			raise RuntimeError('Must have a keys.py config for prod')
