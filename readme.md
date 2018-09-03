@@ -32,14 +32,24 @@ git submodule update
 
 This project also makes use of SQLAlchemy, a python SQL wrapper and toolkit that makes interfacing with SQL databases much cleaner and easier.  SQLAlchemy can also be used to generate databases from the SQLAlchemy models it detects in a project.  The below instructions are a condensed version of those found [here](http://flask-sqlalchemy.pocoo.org/2.3/quickstart/), so if anything doesn't make sense refer back to the source.  To generate your database, do the following:
 
-1. Navigate to the root directory of your PoserRank repo (the one containing .git) and open the python interactive shell
-2. Import SQLAlchemy from the project:
+1. Go to the inner poserrank directory and create a folder named `db`
+2. Navigate to the root directory of your PoserRank repo (the one containing .git) and open the python interactive shell
+3. Import the application factory 
 ```
-from poserrank import db
+from poserrank import app_factory
 ```
-3. Generate the database
+3. Create an instance of the app
 ```
-db.create_all()
+app = app_factory(debug=True)
+```
+4. Import the db
+```
+from poserrank.shared import db
+```
+5. Use the application context to make the database
+```
+with app.app_context():
+    db.create_all()
 ```
 
 That's it!  You can now populate the database with your favorite sqlite browser, or from the interactive shell.
