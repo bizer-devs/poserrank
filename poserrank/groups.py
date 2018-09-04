@@ -20,7 +20,11 @@ def authenticate(user, group):
 	if type(group) is not Group:
 		group = Group.query.filter(Group.id == group)[0]
 
-	return groups.memberships.filter(Membership.user == user).count() > 0
+	members = [membership.user for membership in group.memberships]
+	for member in members:
+		if member == user:
+			return True
+	return False
 
 @groups.route('/')
 def index():
@@ -91,17 +95,27 @@ def add_user(id):
 
 @groups.route('/<int:group_id>/reportuser', methods=['GET', 'POST'])
 def report_user(group_id):
-	if 'user' in session and authenticate(request.form['user_id'], group_id):
+	if 'user' in session and authenticate(session['user']['id'], group_id):
+		reporter = User.query.filter(User.id == session['user']['id'])[0]
+		group = Group.query.filter(Group.id == group_id)[0]
 		if request.method == 'GET':
-			return render_template('reportuser.html.j2')
+			members = [membership.user for membership in group.memberships]
+			return render_template('reportuser.html.j2', group=group, members=members)
+		elif request.method == 'POST':
+			try:
+				offender = User.query.filter(User.username == request.form['offender_name'])[0]
+				membership = Membership.query.filter(Membership.user == offender).filter(Membership.group == group)[0]
+			except IndexError:
+				return 'User or Membership not found', 404
 
-		report = Report(reporter_id=request.form['reporter_id'],
-						offender_id=request.form['offender_id'],
-						score_change=request.form['score_change'],
-						description=request.form['description'],
-						timestamp=datetime.utcnow())
-		db.session.add(report)
-		db.session.commit()
+			report = Report(reporter=reporter,
+							membership=membership,
+							score_change=request.form['score_change'],
+							description=request.form['description'],
+							timestamp=datetime.utcnow())
+			db.session.add(report)
+			db.session.commit()
+			return redirect(url_for('groups.index'))
 
 	else:
 		return 'Authentication failure', 403

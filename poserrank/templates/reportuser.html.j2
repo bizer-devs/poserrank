@@ -13,19 +13,19 @@
 		<div class="columns">
 			<div class="column is-one-third is-offset-one-third">
 				<div class="box">
-					<form action="{{ url_for('groups.report_user') }}" method="POST">
+					<form action="{{ url_for('groups.report_user', group_id=group.id) }}" method="POST">
 
                         <div class="field">
 							<label class="label">User</label>
 							<div class="control">
-								<input class="input" type="text" name="name" placeholder="Text input">
+								<input class="input" type="text" name="offender_name" placeholder="Text input">
 							</div>
 						</div>
 
                         <div class="field">
 							<label class="label">Severity</label>
 							<div class="control">
-								<input class="input" type="text" name="name" placeholder="Text input">
+								<input class="input" type="text" name="score_change" placeholder="Text input">
 							</div>
 						</div>
 
@@ -35,6 +35,7 @@
 								<textarea class="textarea" name="description"></textarea>
 							</div>
 						</div>
+                        <input type="submit" value="Report">
 					</form>
 				</div>
 			</div>
