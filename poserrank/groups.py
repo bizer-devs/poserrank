@@ -22,7 +22,7 @@ def authenticate(user, group):
 
 	return groups.memberships.filter(Membership.user == user).count() > 0
 
-@groups.route('/groups/')
+@groups.route('/')
 def index():
 	if 'user' in session:
 		query = Group.query.all()
@@ -31,7 +31,7 @@ def index():
 		return redirect(url_for('views.index'))
 
 
-@groups.route('/groups/new', methods=['GET', 'POST'])
+@groups.route('/new', methods=['GET', 'POST'])
 def new():
 	if 'user' in session:
 		user = User.query.filter(User.id == session['user_id'])[0]
@@ -53,7 +53,7 @@ def new():
 	else:
 		return redirect(url_for('views.index'))
 
-@groups.route('/groups/<int:id>/adduser', methods=['GET', 'POST'])
+@groups.route('/<int:id>/adduser', methods=['GET', 'POST'])
 def add_user(id):
 	if 'user' in session:
 		user = User.query.filter(User.id == session['user_id'])[0]
@@ -89,7 +89,7 @@ def add_user(id):
 		return redirect(url_for('views.index'))
 
 
-@groups.route('/groups/<int:group_id>/reportuser', methods=['GET', 'POST'])
+@groups.route('/<int:group_id>/reportuser', methods=['GET', 'POST'])
 def report_user(group_id):
 	if 'user' in session and authenticate(request.form['user_id'], group_id):
 		if request.method == 'GET':
