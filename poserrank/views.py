@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, request, session, jsonify, Blueprint
 from poserrank.shared import db
 from poserrank.models import User, Group, Membership
+import crypt, hashlib
 
 """
 All of the views defined for this project will return either an html document or a redirect.  Endponits serving json
@@ -31,7 +32,7 @@ def login():
 		query = User.query.filter(User.username == request.form['username']) # query the database for users with the entered username
 		if query.count() > 0: # check if any results came up
 			user = query.first()
-			if user.password == request.form['password']: # if the passwords match, log the user in
+			if user.hash == hashlib.sha256(str.encode(request.form['password']+user.salty_string)): # if the passwords match, log the user in
 				session['user'] = user.serializeable()
 				session['user_id'] = user.id  # sloppy hack -- needs to be fixed later
 				return redirect(url_for('views.index'))
@@ -82,10 +83,12 @@ def new_user():
 		return render_template('newuser.html.j2')
 
 	elif request.method == 'POST':
+		salt=crypt.mksalt(crypt.METHOD_SHA512)
 		newUser = User(username=request.form['username'],
 					full_name=request.form['full_name'],
 					email=request.form['email'],
-					password=request.form['password'])
+					salty_string=salt,
+					hash=hashlib.sha256(str.encode(request.form['password']+salt)))
 		db.session.add(newUser)
 		db.session.commit()
 		return redirect(url_for('views.index'))

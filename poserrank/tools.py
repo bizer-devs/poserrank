@@ -5,7 +5,7 @@ from json import JSONEncoder
 class ModelEncoder(JSONEncoder):
 	"""
 	A bare-bones JSONEncoder that emulates JSONEncoder, but attempts to call `serializeable` first.  All models should
-	have this method defined, allowing them to
+	have this method defined, allowing them to be serialized and sent over HTTP
 	"""
 
 	def default(self, obj):
