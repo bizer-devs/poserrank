@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from poserrank.tools import ModelEncoder
 from poserrank.api import api
 from poserrank.views import views
+from poserrank.groups import groups
 
 def app_factory(debug=False):
 	app = Flask(__name__)
@@ -28,6 +29,7 @@ def app_factory(debug=False):
 	migrate = Migrate(app, db)
 
 	app.register_blueprint(views, url_prefix='')
+	app.register_blueprint(groups, url_prefix='/groups')
 	app.register_blueprint(api, url_prefix='/api')
 
 
