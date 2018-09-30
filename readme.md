@@ -30,29 +30,9 @@ git submodule update
 
 # SQLAlchemy
 
-This project also makes use of SQLAlchemy, a python SQL wrapper and toolkit that makes interfacing with SQL databases much cleaner and easier.  SQLAlchemy can also be used to generate databases from the SQLAlchemy models it detects in a project.  The below instructions are a condensed version of those found [here](http://flask-sqlalchemy.pocoo.org/2.3/quickstart/), so if anything doesn't make sense refer back to the source.  To generate your database, do the following:
-
-1. Go to the inner poserrank directory and create a folder named `db`
-2. Navigate to the root directory of your PoserRank repo (the one containing .git) and open the python interactive shell
-3. Import the application factory 
-```
-from poserrank import app_factory
-```
-3. Create an instance of the app
-```
-app = app_factory(debug=True)
-```
-4. Import the db
-```
-from poserrank.shared import db
-```
-5. Use the application context to make the database
-```
-with app.app_context():
-    db.create_all()
-```
-
-That's it!  You can now populate the database with your favorite sqlite browser, or from the interactive shell.
+This project also makes use of SQLAlchemy, a python SQL wrapper and toolkit that makes interfacing with SQL databases 
+much cleaner and easier.  SQLAlchemy can also be used to generate databases from the SQLAlchemy models it detects in a 
+project.  To build your database, run the helper script `generate_db.py`.
 
 # Before Installation
 
@@ -60,9 +40,10 @@ Make sure you have sqlite3 and SQLAlchemy (not the python packages, just the reg
 
 # Installation and Use
 
-1. Clone the repository to a local repository of choice.
+1. Clone the repository to a local directory
 2. Retrieve the Bulma repo at https://github.com/jgthms/bulma (see above instructions)
-3. Run the following pip command to install python dependencies from requirements.txt (alternatively using pip3 if your system uses it to handle python3 packages):
+3. Run the following pip command to install python dependencies from requirements.txt (alternatively using pip3 if your 
+system uses it to handle python3 packages):
 ```
 pip install -r requirements.txt
 ```
@@ -70,8 +51,14 @@ pip install -r requirements.txt
 5. Run run.py with python.
 6. Open the index page on a web browser (localhost:5000 by default).
 
+# Deployment
+
+Poserrank is currently being deployed with a Docker container running Nginx.  Continuous integration is planned but not
+yet implemented.
+
 # Useful Links
 
 * Python Sqlite3 Documentation - https://docs.python.org/3/library/sqlite3.html
 * Bulma Documentation - https://bulma.io/documentation/overview/start/
 * SQLAlchemy Flask Plugin - http://flask-sqlalchemy.pocoo.org/2.3/
+* Nginx-Flask Docker Image - https://github.com/tiangolo/uwsgi-nginx-flask-docker
