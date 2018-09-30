@@ -14,7 +14,7 @@
 		<div class="columns">
 			<div class="column is-one-third is-offset-one-third">
 				<div class="box">
-					<form action="{{ url_for('views.add_user_to_group', id=group.id) }}" method="POST">
+					<form action="{{ url_for('groups.add_user', id=group.id) }}" method="POST">
 						<div class="field">
 							<label class="label">Username</label>
 							<div class="control">

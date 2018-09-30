@@ -14,7 +14,7 @@
 				<a class="navbar-item" href="{{ url_for('views.index') }}">Home</a>
 				<a class="navbar-item" href="{{ url_for('views.top') }}">Top</a>
 				{% if 'user' in session %}
-					<a class="navbar-item" href="{{ url_for('views.groups') }}">Groups</a>
+					<a class="navbar-item" href="{{ url_for('groups.index') }}">Groups</a>
 				{% endif %}
 			</div>
 			<div class="navbar-end">

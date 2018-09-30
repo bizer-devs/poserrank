@@ -1,0 +1,45 @@
+{% extends "layout.html.j2" %}
+{% block page %}Report User{% endblock %}
+{% block content %}
+<div class="container">
+	<section class="hero">
+		<div class="container has-text-centered">
+			<h1 class="title">Report {{ group.name }} User</h1>
+		</div>
+	</section>
+
+    <section class="section">
+
+		<div class="columns">
+			<div class="column is-one-third is-offset-one-third">
+				<div class="box">
+					<form action="{{ url_for('groups.report_user', group_id=group.id) }}" method="POST">
+
+                        <div class="field">
+							<label class="label">User</label>
+							<div class="control">
+								<input class="input" type="text" name="offender_name" placeholder="Text input">
+							</div>
+						</div>
+
+                        <div class="field">
+							<label class="label">Severity</label>
+							<div class="control">
+								<input class="input" type="text" name="score_change" placeholder="Text input">
+							</div>
+						</div>
+
+						<div class="field">
+							<label class="label">Description</label>
+							<div class="control">
+								<textarea class="textarea" name="description"></textarea>
+							</div>
+						</div>
+                        <input type="submit" value="Report">
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+{% endblock %}

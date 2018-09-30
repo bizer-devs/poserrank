@@ -1,2 +1,5 @@
-SQLALCHEMY_DATABASE_URI = 'sqlite:///db/development.db'
+import os
+from poserrank.shared import BASE_DIR
+
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'db/development.db')
 DEBUG = True
