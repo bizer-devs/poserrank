@@ -32,7 +32,7 @@ def login():
 		query = User.query.filter(User.username == request.form['username']) # query the database for users with the entered username
 		if query.count() > 0: # check if any results came up
 			user = query.first()
-			if user.hash == hashlib.sha256(str.encode(request.form['password']+user.salty_string)): # if the passwords match, log the user in
+			if user.hash == hashlib.sha256(str.encode(request.form['password']+user.salty_string)).digest(): # if the passwords match, log the user in
 				session['user'] = user.serializeable()
 				session['user_id'] = user.id  # sloppy hack -- needs to be fixed later
 				return redirect(url_for('views.index'))
@@ -88,7 +88,7 @@ def new_user():
 					full_name=request.form['full_name'],
 					email=request.form['email'],
 					salty_string=salt,
-					hash=hashlib.sha256(str.encode(request.form['password']+salt)))
+					hash=hashlib.sha256(str.encode(request.form['password']+salt)).digest())
 		db.session.add(newUser)
 		db.session.commit()
 		return redirect(url_for('views.index'))
